@@ -1,0 +1,545 @@
+:root {
+    --bg-color: #0d1b2a;
+    --flower-color: #fceabb;
+    --flower-center: #f39c12;
+    --petal-gradient: linear-gradient(to top, #fff, #ffe0e9);
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background: radial-gradient(circle at center bottom, #2b3a55 0%, #0b1021 100%);
+    font-family: 'Lato', sans-serif;
+    height: 100vh;
+    color: white;
+}
+
+/* ... existing lights ... */
+/* --- Lights on Cord --- */
+.lights-container {
+    position: absolute;
+    top: 0;
+    left: -5%; /* Start offset for parallax */
+    width: 110%; /* Extra width for movement */
+    height: 100px; 
+    z-index: 10;
+    transition: transform 0.1s ease-out; /* Smooth movement */
+}
+
+/* ... existing styles ... */
+
+.ground-scene {
+    position: absolute; bottom: 0; 
+    width: 110%; /* Wider for parallax */
+    left: -5%; 
+    height: 20%; 
+    z-index: 10;
+    transition: transform 0.1s ease-out;
+}
+
+.light-cord {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+}
+
+.lights-bulbs {
+    margin: 0; padding: 0; list-style: none;
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none;
+}
+
+.lights-bulbs li {
+    position: absolute;
+    width: 16px; 
+    height: 16px;
+    background: #fff;
+    border-radius: 50%;
+    top: var(--y); /* Positioned by inline styles to match curve approximation */
+    left: var(--x);
+    transform: translate(-50%, 0);
+    box-shadow: 0 0 10px 2px rgba(255,255,255,0.4);
+    animation: flash 2s infinite alternate;
+}
+.lights-bulbs li::before {
+    content: '';
+    position: absolute;
+    top: -4px; left: 4px;
+    width: 8px; height: 6px;
+    background: #222;
+}
+
+/* Colors */
+.lights-bulbs li:nth-child(2n+1) { background: #ff3333; box-shadow: 0 0 15px 4px rgba(255,0,0,0.5); animation-duration: 1.2s; }
+.lights-bulbs li:nth-child(3n+1) { background: #33ff33; box-shadow: 0 0 15px 4px rgba(0,255,0,0.5); animation-duration: 2.5s; }
+.lights-bulbs li:nth-child(4n+1) { background: #3333ff; box-shadow: 0 0 15px 4px rgba(0,0,255,0.5); animation-duration: 1.8s; }
+.lights-bulbs li:nth-child(5n+0) { background: #ffff33; box-shadow: 0 0 15px 4px rgba(255,255,0,0.5); animation-duration: 2.1s; }
+
+@keyframes flash {
+    0%, 100% { opacity: 1; transform: translate(-50%, 0) scale(1); }
+    50% { opacity: 0.6; transform: translate(-50%, 0) scale(0.9); }
+}
+
+/* --- Snow --- */
+#snow-container {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none; z-index: 5;
+}
+.snowflake { /* JS created */
+    position: absolute; background: white; border-radius: 50%; opacity: 0.8;
+    animation: fall linear infinite;
+}
+@keyframes fall { to { transform: translateY(110vh); } }
+
+/* --- Envelope & Bouquet --- */
+.center-stage {
+    position: absolute;
+    top: 75%; /* Lowered further per user request */
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    height: 200px;
+    z-index: 20;
+    perspective: 1000px; /* For 3D flap flip */
+}
+
+/* Envelope Container */
+.envelope-container {
+    position: relative;
+    width: 300px;
+    height: 200px;
+    cursor: pointer;
+}
+.envelope-container:hover { animation: shake 0.5s ease-in-out infinite; }
+.envelope-container.open-envelope:hover { animation: none; } /* Stop shaking if open */
+
+@keyframes shake {
+    0% { transform: rotate(0deg); }
+    25% { transform: rotate(1deg); }
+    50% { transform: rotate(0deg); }
+    75% { transform: rotate(-1deg); }
+    100% { transform: rotate(0deg); }
+}
+
+/* Envelope Layers */
+.envelope-back {
+    position: absolute; width: 100%; height: 100%;
+    background: #c0392b; /* Dark Red */
+    border-radius: 5px;
+    z-index: 1;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5); /* Shadow for depth */
+}
+
+.envelope-front {
+    position: absolute; bottom: 0; width: 0; height: 0;
+    border-style: solid;
+    border-width: 0 150px 120px 150px;
+    border-color: transparent transparent #e74c3c transparent;
+    z-index: 10;
+    filter: drop-shadow(0 -5px 5px rgba(0,0,0,0.1));
+}
+
+.envelope-flap {
+    position: absolute; top: 0; left: 0;
+    width: 0; height: 0;
+    border-style: solid;
+    border-width: 110px 150px 0 150px;
+    border-color: #c0392b transparent transparent transparent; /* Darker red */
+    z-index: 11;
+    transform-origin: top;
+    transition: transform 0.6s ease 0s, z-index 0.1s linear 0.2s;
+    filter: drop-shadow(0 5px 5px rgba(0,0,0,0.2));
+}
+
+/* Open Animation */
+.envelope-container.open-envelope .envelope-flap {
+    transform: rotateX(180deg);
+    z-index: 0; /* Move behind back */
+}
+
+/* Content Wrapper (Bouquet + Note) */
+/* Content Wrapper (Bouquet + Note) */
+.content-wrapper {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 90%;
+    height: 90%;
+    z-index: 5; /* Inside */
+    transition: transform 1s ease 0.6s, opacity 0.5s ease 0.6s; /* Wait for flap */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    
+    /* Initially hidden deep inside */
+    transform: translateX(-50%) translateY(100px) scale(0.5); 
+    opacity: 0;
+}
+
+.envelope-container.slide-up .content-wrapper {
+    transform: translateX(-50%) translateY(-220px) scale(1);
+    opacity: 1;
+    z-index: 15; 
+}
+
+/* --- Bouquet & Message Styles --- */
+.bouquet-wrapper {
+    position: relative;
+    width: 100px; height: 150px;
+    transition: transform 0.5s ease;
+    transform: scale(0.5); /* Start small inside */
+}
+
+.envelope-container.slide-up .bouquet-wrapper {
+    transform: scale(1); /* Full size when out */
+}
+
+/* Individual Flower Styles */
+.flower-instance {
+    position: absolute; bottom: 0; left: 50%;
+    width: 60px; height: 100px;
+    transform-origin: bottom center;
+    transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.f-center { z-index: 5; transform: translateX(-50%) rotate(0deg); }
+.f-left { z-index: 4; transform: translateX(-50%) rotate(-15deg); }
+.f-right { z-index: 4; transform: translateX(-50%) rotate(15deg); }
+
+/* Opened Bouquet State (triggered by JS .open on bouquet-wrapper) */
+.bouquet-wrapper.open .f-left { transform: translateX(-80px) rotate(-35deg) scale(1.1); }
+.bouquet-wrapper.open .f-right { transform: translateX(20px) rotate(35deg) scale(1.1); }
+.bouquet-wrapper.open .f-center { transform: translateX(-50%) translateY(-20px) scale(1.2); }
+
+/* Parts */
+.stem { position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 4px; height: 60px; background: #2e8b57; }
+.flower-head { position: absolute; top:0; left:50%; transform:translateX(-50%); width:0; height:0; }
+.flower-center {
+    position: absolute; width: 16px; height: 16px; background: var(--flower-center);
+    border-radius: 50%; transform: translate(-50%, -50%) scale(0); z-index: 10;
+    transition: transform 0.8s ease 0.3s;
+}
+.bouquet-wrapper.open .flower-center { transform: translate(-50%, -50%) scale(1); }
+
+/* Petals */
+.petal {
+    position: absolute; width: 20px; height: 50px; background: var(--petal-gradient);
+    border-radius: 50% 50% 10% 10%; transform-origin: bottom center;
+    border: 1px solid #eee; transition: all 1s ease; opacity: 0.9;
+}
+.p1 { transform: translate(-50%, 0) rotate(0deg); z-index:3; }
+.p2 { transform: translate(-50%, 0) rotate(60deg); z-index:2; }
+.p3 { transform: translate(-50%, 0) rotate(120deg); z-index:1; }
+.p4 { transform: translate(-50%, 0) rotate(180deg); z-index:1; }
+.p5 { transform: translate(-50%, 0) rotate(240deg); z-index:2; }
+.p6 { transform: translate(-50%, 0) rotate(300deg); z-index:3; }
+
+.bouquet-wrapper.open .p1 { transform: translate(-50%, 0) rotate(0deg) rotateX(50deg) translateY(-5px); }
+.bouquet-wrapper.open .p2 { transform: translate(-50%, 0) rotate(60deg) rotateX(50deg) translateY(-5px); }
+.bouquet-wrapper.open .p3 { transform: translate(-50%, 0) rotate(120deg) rotateX(50deg) translateY(-5px); }
+.bouquet-wrapper.open .p4 { transform: translate(-50%, 0) rotate(180deg) rotateX(50deg) translateY(-5px); }
+.bouquet-wrapper.open .p5 { transform: translate(-50%, 0) rotate(240deg) rotateX(50deg) translateY(-5px); }
+.bouquet-wrapper.open .p6 { transform: translate(-50%, 0) rotate(300deg) rotateX(50deg) translateY(-5px); }
+
+/* Leaves */
+.leaves-base { position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); width: 10px; height: 10px; }
+.leaf { position: absolute; bottom: 0; width: 15px; height: 30px; background: #228b22; border-radius: 0 50% 0 50%; transform-origin: bottom left; }
+.l1 { transform: rotate(-45deg); left: -10px; }
+.l2 { transform: rotate(45deg) scaleX(-1); left: 10px; }
+
+/* Message */
+.message-card {
+    opacity: 0; transform: translateY(10px);
+    transition: all 1s ease 1s; /* Appear late */
+    background: rgba(255, 255, 255, 0.95);
+    color: #ae2012; /* Deep warm red */
+    padding: 20px 30px;
+    border-radius: 10px;
+    margin-top: 15px;
+    text-align: center;
+    width: 320px;
+    box-shadow: 0 5px 25px rgba(255,255,255,0.5);
+    pointer-events: none;
+}
+.envelope-container.slide-up .message-card {
+    opacity: 1; transform: translateY(0); pointer-events: auto;
+}
+.message-card h1 { 
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem; margin: 0 0 10px 0; color: #9b2226; font-style: italic;
+}
+.message-card p {
+    font-family: 'Lato', sans-serif;
+    font-size: 1rem; line-height: 1.6; color: #333;
+}
+
+/* --- Scene Assets --- */
+.ground-scene {
+    position: absolute; bottom: 0; 
+    width: 110%; /* Wider for parallax */
+    left: -5%; 
+    height: 20%; 
+    z-index: 10;
+    transition: transform 0.1s ease-out;
+}
+.snow-ground {
+    position: absolute; bottom: 0; width: 100%; height: 100%;
+    background: white;
+    border-radius: 50% 50% 0 0 / 20% 20% 0 0;
+    box-shadow: 0 -10px 20px rgba(255,255,255,0.2);
+}
+
+.scene-assets {
+    position: absolute; bottom: 10px; width: 100%; height: 250px;
+    pointer-events: none;
+}
+
+.asset-tree {
+    position: absolute; left: 5%; bottom: 20px;
+    width: 200px; height: 260px; /* Big Tree */
+    filter: drop-shadow(2px 5px 8px rgba(0,0,0,0.3));
+}
+
+.asset-snowman {
+    position: absolute; right: 10%; bottom: 20px;
+    width: 140px; height: 200px; /* Big Snowman */
+    filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.2));
+}
+
+.asset-gifts {
+    position: absolute;
+    bottom: 20px;
+    left: 14%; /* Positioned next to the tree */
+    width: 100px;
+    height: 60px;
+    filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.2));
+    z-index: 15; /* Ensure in front of tree/snow if needed, but behind envelope wrapper which is z-20 */
+}
+
+/* Animations */
+.ornament-anim { animation: twinkle 1.5s infinite alternate; }
+@keyframes twinkle { from{ opacity:0.6; } to{ opacity:1; transform: scale(1.2); transform-origin: center; }}
+
+/* Responsive */
+@media (max-width: 600px) {
+    /* Basic adjustments */
+    .lights-container { height: 60px; }
+    .message-card h1 { font-size: 1.6rem; }
+
+    /* Celebration features mobile fixes */
+    #countdown-container {
+        top: 10px;
+        right: 50%;
+        transform: translateX(50%);
+        width: 100%;
+        justify-content: center;
+        gap: 5px;
+    }
+    .time-box {
+        padding: 5px 8px;
+        min-width: 40px;
+    }
+    .time-box span:first-child { font-size: 1rem; }
+    .time-box .label { font-size: 0.6rem; }
+
+    .music-player {
+        top: auto;
+        bottom: 10px; /* Move to bottom left on mobile */
+        left: 10px;
+        right: auto;
+    }
+    #music-toggle {
+        padding: 8px 15px;
+        font-size: 0.8rem;
+    }
+
+    /* Adjust assets for mobile */
+    .asset-tree { width: 120px; height: 160px; left: -10px; }
+    .asset-snowman { width: 90px; height: 130px; right: -5px; }
+    .asset-gifts { width: 70px; left: 80px; } /* Tighten fit */
+}
+
+/* --- Celebration Features (Modern Glassmorphism) --- */
+
+/* Countdown - Top Right */
+#countdown-container {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    display: flex;
+    gap: 15px;
+    z-index: 100;
+}
+.time-box {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 10px 15px;
+    border-radius: 12px;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    min-width: 60px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+.time-box:hover {
+    transform: translateY(-3px);
+    background: rgba(255, 255, 255, 0.15);
+}
+.time-box span { display: block; }
+.time-box span:first-child { 
+    font-size: 1.4rem; 
+    font-weight: 700; 
+    color: #fceabb; /* Soft Gold */
+    text-shadow: 0 0 10px rgba(252, 234, 187, 0.5);
+}
+.time-box .label { 
+    font-size: 0.75rem; 
+    color: #eee; 
+    text-transform: uppercase; 
+    letter-spacing: 1px;
+    margin-top: 4px;
+}
+
+/* Music Player - Top Left */
+.music-player {
+    position: absolute;
+    top: 30px;
+    left: 30px;
+    z-index: 100;
+}
+#music-toggle {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 12px 25px;
+    border-radius: 30px; /* Pill shape */
+    cursor: pointer;
+    font-family: 'Lato', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+#music-toggle:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+}
+
+/* Shooting Star (Premium) */
+.shooting-star {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 150px; /* Long tail */
+    height: 2px;
+    background: linear-gradient(to left, rgba(255,255,255,0), rgba(255,255,255,1));
+    border-radius: 50%;
+    transform: rotate(-45deg); /* Angle of descent */
+    opacity: 0;
+    z-index: 5;
+    pointer-events: none;
+    animation: shoot 4s ease-in-out infinite;
+    filter: drop-shadow(0 0 5px rgba(255,255,255,0.8));
+}
+
+.shooting-star::before {
+    content: '';
+    position: absolute;
+    right: 0; /* Head at the front of movement (which is visually right due to gradient direction) */
+    top: 50%;
+    transform: translateY(-50%);
+    width: 6px;
+    height: 6px;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 0 10px 2px rgba(255, 255, 255, 0.8), 0 0 20px 5px rgba(135, 206, 250, 0.5); /* Blue-ish glow */
+}
+
+/* Animating across the screen */
+@keyframes shoot {
+    0% {
+        transform: translate(300px, -300px) rotate(-45deg);
+        width: 100px;
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+        width: 150px;
+    }
+    20% {
+        transform: translate(-300px, 300px) rotate(-45deg);
+        width: 0px; 
+        opacity: 0;
+    }
+    100% {
+        /* Long pause */
+        transform: translate(-300px, 300px) rotate(-45deg);
+        opacity: 0;
+    }
+}
+
+/* Fireworks Canvas */
+#fireworks-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 999; /* On top of everything */
+}
+
+/* --- Magic Cursor Sparkles --- */
+.magic-sparkle {
+    position: fixed;
+    pointer-events: none;
+    background: radial-gradient(circle, #fff, transparent);
+    border-radius: 50%;
+    width: 6px;
+    height: 6px;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 5px #ffd700, 0 0 10px #ffeb3b; /* Gold/Yellow glow */
+    z-index: 9999;
+    animation: sparkle-fade 0.8s forwards;
+}
+
+@keyframes sparkle-fade {
+    0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+    100% { transform: translate(-50%, -50%) scale(0) translateY(20px); opacity: 0; }
+}
+
+/* --- Interactive Scene Assets --- */
+.asset-tree, .asset-snowman {
+    cursor: pointer;
+    pointer-events: auto; /* Enable clicks despite parent having none */
+    transition: filter 0.3s;
+}
+.asset-tree:hover, .asset-snowman:hover {
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.6));
+}
+
+.anim-bounce {
+    animation: bounce 0.6s ease;
+}
+@keyframes bounce {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+.anim-wiggle {
+    animation: wiggle 0.6s ease;
+}
+@keyframes wiggle {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(-10deg); }
+    75% { transform: rotate(10deg); }
+}

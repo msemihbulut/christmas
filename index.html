@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mutlu Yıllar Sevgilim</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="night-sky">
+        <!-- Lights String with Cord (SVG) -->
+        <div class="lights-container">
+            <svg class="light-cord" viewBox="0 0 100 15" preserveAspectRatio="none">
+                <path d="M0,0 Q50,15 100,0" fill="none" stroke="#222" stroke-width="0.5" />
+            </svg>
+            <ul class="lights-bulbs">
+                <!-- Lights positioned along the curve y = 30 * t * (1-t) * scale(6.66) ~ 200*t*(1-t) -->
+                <li style="--x: 5%; --y: 9.5px;"></li>
+                <li style="--x: 15%; --y: 25.5px;"></li>
+                <li style="--x: 25%; --y: 37.5px;"></li>
+                <li style="--x: 35%; --y: 45.5px;"></li>
+                <li style="--x: 45%; --y: 49.5px;"></li>
+                <li style="--x: 55%; --y: 49.5px;"></li>
+                <li style="--x: 65%; --y: 45.5px;"></li>
+                <li style="--x: 75%; --y: 37.5px;"></li>
+                <li style="--x: 85%; --y: 25.5px;"></li>
+                <li style="--x: 95%; --y: 9.5px;"></li>
+            </ul>
+        </div>
+
+        <!-- Falling Snow Container -->
+        <div id="snow-container"></div>
+
+        <!-- Center Interaction: Envelope -->
+        <div class="center-stage">
+            <div class="envelope-container" id="envelope">
+                <div class="envelope-back"></div>
+                
+                <div class="content-wrapper">
+                    <div class="bouquet-wrapper" id="bouquet">
+                        <!-- Flower 1 (Center) -->
+                        <div class="flower-instance f-center">
+                            <div class="stem"></div>
+                            <div class="flower-head">
+                                <!-- Orange center removed per request -->
+                                <div class="petal p1"></div><div class="petal p2"></div>
+                                <div class="petal p3"></div><div class="petal p4"></div>
+                                <div class="petal p5"></div><div class="petal p6"></div>
+                            </div>
+                        </div>
+                        <!-- Flower 2 (Left) -->
+                        <div class="flower-instance f-left">
+                            <div class="stem"></div>
+                            <div class="flower-head">
+                                <div class="petal p1"></div><div class="petal p2"></div>
+                                <div class="petal p3"></div><div class="petal p4"></div>
+                                <div class="petal p5"></div><div class="petal p6"></div>
+                            </div>
+                        </div>
+                        <!-- Flower 3 (Right) -->
+                        <div class="flower-instance f-right">
+                            <div class="stem"></div>
+                            <div class="flower-head">
+                                <div class="petal p1"></div><div class="petal p2"></div>
+                                <div class="petal p3"></div><div class="petal p4"></div>
+                                <div class="petal p5"></div><div class="petal p6"></div>
+                            </div>
+                        </div>
+                        <!-- Greenery/Leaves at base -->
+                        <div class="leaves-base">
+                            <div class="leaf l1"></div>
+                            <div class="leaf l2"></div>
+                        </div>
+                    </div>
+
+                    <div class="message-card" id="message">
+                        <h1>Mutlu Yıllar Sevgilim!</h1>
+                        <p>Sen hayatımdaki en güzel hediyesin.<br>Her yeni yılım seninle güzel.<br>Seni çok seviyorum ❤️</p>
+                    </div>
+                </div>
+
+                <div class="envelope-front"></div>
+                <div class="envelope-flap"></div>
+            </div>
+        </div>
+
+        <!-- Bottom Scene -->
+        <div class="ground-scene">
+            <div class="snow-ground"></div>
+            
+            <!-- Landscape SVG Container -->
+            <div class="scene-assets">
+                <!-- Aesthetic Tree (SVG) -->
+                <svg class="asset-tree" viewBox="0 0 120 160">
+                    <defs>
+                        <radialGradient id="treeGlow" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+                             <stop offset="0%" style="stop-color:#2d6a4f;stop-opacity:1" />
+                             <stop offset="100%" style="stop-color:#1b4332;stop-opacity:1" />
+                        </radialGradient>
+                    </defs>
+                    <!-- Trunk -->
+                    <path d="M55,140 L65,140 L65,155 L55,155 Z" fill="#4a3b2b" />
+                    <!-- Layers with snow tips -->
+                    <!-- Bottom Layer -->
+                    <path d="M15,140 Q60,150 105,140 L85,100 L35,100 Z" fill="url(#treeGlow)" />
+                    <path d="M15,140 Q60,150 105,140 L105,135 Q60,145 15,135 Z" fill="#fff" opacity="0.8" /> <!-- Snow -->
+                    <!-- Mid Layer -->
+                    <path d="M25,105 Q60,115 95,105 L80,70 L40,70 Z" fill="url(#treeGlow)" />
+                    <path d="M25,105 Q60,115 95,105 L95,100 Q60,110 25,100 Z" fill="#fff" opacity="0.8" />
+                    <!-- Top Layer -->
+                    <path d="M35,75 Q60,85 85,75 L60,30 Z" fill="url(#treeGlow)" />
+                    <path d="M35,75 Q60,85 85,75 L85,70 Q60,80 35,70 Z" fill="#fff" opacity="0.8" />
+                    
+                    <!-- Star -->
+                    <polygon points="60,20 63,28 72,28 65,34 68,42 60,38 52,42 55,34 48,28 57,28" fill="#ffd700" filter="drop-shadow(0 0 5px gold)" />
+                    
+                    <!-- Ornaments -->
+                    <circle cx="40" cy="120" r="3" fill="#d62828" class="ornament-anim" />
+                    <circle cx="80" cy="125" r="3" fill="#fcbf49" class="ornament-anim" style="animation-delay:0.3s" />
+                    <circle cx="50" cy="90" r="3" fill="#eae2b7" class="ornament-anim" style="animation-delay:0.7s" />
+                    <circle cx="70" cy="85" r="3" fill="#d62828" class="ornament-anim" style="animation-delay:1.1s" />
+                    <circle cx="60" cy="55" r="3" fill="#fcbf49" class="ornament-anim" style="animation-delay:1.5s" />
+                </svg>
+
+                <!-- Aesthetic Gifts (SVG) -->
+                <svg class="asset-gifts" viewBox="0 0 100 60">
+                    <!-- Gift 1 -->
+                    <rect x="0" y="20" width="30" height="30" fill="#e63946" stroke="#b01a26" stroke-width="1" />
+                    <rect x="13" y="20" width="4" height="30" fill="#f1faee" />
+                    <path d="M13,20 C5,10 5,20 15,20 C25,20 25,10 17,20" fill="none" stroke="#f1faee" stroke-width="2" />
+                    <!-- Gift 2 -->
+                    <rect x="25" y="30" width="25" height="20" fill="#457b9d" stroke="#1d3557" stroke-width="1" />
+                    <rect x="36" y="30" width="3" height="20" fill="#a8dadc" />
+                    <path d="M36,30 C30,25 30,30 37.5,30 C45,30 45,25 39,30" fill="none" stroke="#a8dadc" stroke-width="2" />
+                </svg>
+
+                <!-- Large Snowman (SVG) - Kept same but cleaner code if needed, using previous coordinates -->
+                <svg class="asset-snowman" viewBox="0 0 100 140">
+                    <circle cx="50" cy="100" r="30" fill="white" filter="url(#glow)"/>
+                    <circle cx="50" cy="55" r="22" fill="white" />
+                    <circle cx="50" cy="90" r="2" fill="#333" />
+                    <circle cx="50" cy="100" r="2" fill="#333" />
+                    <circle cx="50" cy="110" r="2" fill="#333" />
+                    <path d="M35,68 Q50,80 65,68" stroke="#d00000" stroke-width="8" fill="none" stroke-linecap="round" />
+                    <path d="M60,70 L65,90" stroke="#d00000" stroke-width="6" stroke-linecap="round" />
+                    <circle cx="43" cy="50" r="2" fill="black" />
+                    <circle cx="57" cy="50" r="2" fill="black" />
+                    <polygon points="50,55 50,60 65,58" fill="orange" />
+                    <rect x="35" y="33" width="30" height="5" fill="#333" />
+                    <rect x="40" y="15" width="20" height="18" fill="#333" />
+                    <rect x="40" y="28" width="20" height="3" fill="#c00" />
+                </svg>
+                </svg>
+            </div>
+        </div>
+            <!-- Celebration Features -->
+            <div id="countdown-container">
+                <div class="time-box">
+                    <span id="days">00</span>
+                    <span class="label">Gün</span>
+                </div>
+                <div class="time-box">
+                    <span id="hours">00</span>
+                    <span class="label">Saat</span>
+                </div>
+                <div class="time-box">
+                    <span id="minutes">00</span>
+                    <span class="label">Dk</span>
+                </div>
+                <div class="time-box">
+                    <span id="seconds">00</span>
+                    <span class="label">Sn</span>
+                </div>
+            </div>
+
+            <!-- Shooting Star Container -->
+            <div class="shooting-star"></div>
+
+            <!-- Music Player -->
+            <div class="music-player">
+                <button id="music-toggle">🎵 Müzik Başlat</button>
+                <audio id="bg-music" loop>
+                    <!-- Placeholder for user to add song.mp3 -->
+                    <source src="song.mp3" type="audio/mpeg">
+                </audio>
+            </div>
+            
+            <!-- Fireworks Canvas -->
+            <canvas id="fireworks-canvas"></canvas>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
