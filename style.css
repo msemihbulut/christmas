@@ -88,8 +88,20 @@ body {
     pointer-events: none; z-index: 5;
 }
 .snowflake { /* JS created */
-    position: absolute; background: white; border-radius: 50%; opacity: 0.8;
+    position: absolute;
+    opacity: 0.8;
     animation: fall linear infinite;
+    color: white; /* For text snowflakes */
+    user-select: none;
+}
+.snow-dot {
+    background: white;
+    border-radius: 50%;
+}
+.snow-char {
+    background: transparent;
+    font-size: 20px; /* Base size */
+    filter: drop-shadow(0 0 2px rgba(255,255,255,0.5));
 }
 @keyframes fall { to { transform: translateY(110vh); } }
 

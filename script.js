@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 typeHtml(msgTitle, titleText, 100, () => {
                    // After Title, Type Body
                    setTimeout(() => {
-                       typeHtml(msgBody, bodyText, 50);
+                       typeHtml(msgBody, bodyText, 30);
                    }, 300);
                 });
             }, 600); // Wait for card to be mostly visible
@@ -84,13 +84,35 @@ document.addEventListener('DOMContentLoaded', () => {
         const snowflake = document.createElement('div');
         snowflake.classList.add('snowflake');
         
-        const size = Math.random() * 5 + 2 + 'px';
+        // Randomize Type
+        const type = Math.random();
+        let size;
+        
+        if (type < 0.3) {
+             // 30% Standard Dot
+             snowflake.classList.add('snow-dot');
+             size = Math.random() * 5 + 2 + 'px';
+        } else if (type < 0.8) {
+             // 50% Snowflake Character (0.3 to 0.8)
+             snowflake.classList.add('snow-char');
+             snowflake.textContent = '❄';
+             size = Math.random() * 10 + 10 + 'px'; // Bigger for text
+             snowflake.style.fontSize = size;
+        } else {
+             // 20% Heart
+             snowflake.classList.add('snow-char');
+             snowflake.textContent = '❤'; // Or '🤍' for white heart
+             snowflake.style.color = '#ff6b6b'; // Light red/pinkish
+             size = Math.random() * 10 + 10 + 'px';
+             snowflake.style.fontSize = size;
+        }
+        
         const startLeft = Math.random() * 100 + '%';
         const duration = Math.random() * 5 + 5 + 's'; 
         const delay = Math.random() * 5 + 's';
 
-        snowflake.style.width = size;
-        snowflake.style.height = size;
+        snowflake.style.width = size; // Only affects dots, fontSize handles chars
+        snowflake.style.height = size; // Only affects dots
         snowflake.style.left = startLeft;
         snowflake.style.animationDuration = duration;
         snowflake.style.animationDelay = delay;
